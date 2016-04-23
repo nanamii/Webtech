@@ -27,7 +27,7 @@ Secure Shell
 
 .. note::
 
-   - I would like to give you an introduction to YubiKey
+   - note 
 
 ----
 
@@ -65,14 +65,29 @@ Secure Shell
 
 :blocky:`Was ist SSH?`
 
-- SSH = Secure Shell
+- SSH = **S** ecure **Sh** ell
 - TCP/IP - Protokoll
 - Hauptanwendung: Verschlüsselte Netzwerkverbindung zu einem entfernten Gerät
 - Vorgänger: Telnet, RSH
 
 .. note::
    - note
-  
+
+----
+
+:blocky:`Grundprinzip von SSH`
+
+- Schutz von privaten Daten durch Verschlüsselung
+- Integrität der Kommunikation
+- Authentifizierung
+
+.. note::
+   - note
+
+.. image:: images/ssh_grundprinzip.png
+   :align: left
+   :height: 400px
+
 ----
 
 :blocky:`Grundprinzip von SSH`
@@ -88,7 +103,37 @@ Secure Shell
    :align: right
    :height: 400px
 
-           
+ 
+----
+
+:blocky:`Remote Terminal Session`
+
+.. code-block:: bash  
+   
+   [sue@kaktus ~]$ ssh qitta@hitomi
+   qitta@hitomi's password: 
+   Last login: Fri Apr 22 21:24:20 2016 from 192.168.23.20
+   ~ ❯ 
+
+
+.. note::
+   - note
+
+----
+
+:blocky:`Datenübertragung mit scp`
+
+.. code-block:: bash  
+  
+   [sue@kaktus ~]$ scp letter.pdf qitta@hitomi:~
+   qitta@hitomi's password:
+   letter.pdf                 100% 6297     6.2KB/s   00:00
+
+
+.. note::
+   - note
+
+
 ----
 
 :blocky:`Why 2F authentication`

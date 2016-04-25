@@ -65,28 +65,13 @@ Secure Shell
 
 :blocky:`Was ist SSH?`
 
-- SSH = **S** ecure **Sh** ell
+- **S** ecure **Sh** ell
 - TCP/IP - Protokoll
 - Hauptanwendung: Verschlüsselte Netzwerkverbindung zu einem entfernten Gerät
 - Vorgänger: Telnet, RSH
 
 .. note::
    - note
-
-----
-
-:blocky:`Grundprinzip von SSH`
-
-- Schutz von privaten Daten durch Verschlüsselung
-- Integrität der Kommunikation
-- Authentifizierung
-
-.. note::
-   - note
-
-.. image:: images/ssh_grundprinzip.png
-   :align: left
-   :height: 400px
 
 ----
 
@@ -103,8 +88,79 @@ Secure Shell
    :align: right
    :height: 400px
 
- 
 ----
+
+:blocky:`SSH-1 und SSH-2`
+
+- Jahreszahl, Funktionen, Nachteile, SSH-1 nicht mehr empfohlen
+- SSH-2: Erweiterungen
+
+.. note::
+   - note
+
+----
+
+:blocky:`SSH-Implementierungen`
+
+- OpenSSH
+- Dropbear
+- Mosh
+- Lsh
+- PuTTY
+
+.. note::
+   - Dropbear, MIT-Lizenz, Implementierung SSH2-Protokol,
+     für Linux, Mac OS X, FreeBSD ...
+   - Mosh: weitere Funktionalitäten, vorallem für mobile Nutzer,
+     Verbindung wird bei Roaming aufrecht erhalten, optimierte Latenz (sofort
+     zeigen, welche Befehle eingegeben wurden)
+   - Lsh ebenfalls freie Impl. von SSH2-Protokoll, GPL
+   - PuTTY, MIT-Lizenz, überwiegend für Windows
+
+
+
+.. image:: images/openssh.gif
+   :align: left
+   :height: 200px
+
+
+
+
+----
+
+:blocky:`Grundprinzip von SSH`
+
+- Schutz von Daten durch Verschlüsselung
+- Integrität der Kommunikation
+- Authentifizierung
+
+.. note::
+   - note
+
+.. image:: images/ssh_grundprinzip.png
+   :align: left
+   :height: 400px
+
+----
+
+
+:blocky:`Let's start`
+
+ - Installation: apt-get install openssh, dnf install opensshd
+ - Kaum Konfiguration nötig, näheres hierzu später
+ - ssh (client) und sshd (d=daemon, server)
+ - manpages zeigen
+ - config zeigen
+ - --> weitere Beispiele anhand OpenSSH
+
+.. note::
+   - note 
+
+
+----
+
+
+
 
 :blocky:`Remote Terminal Session`
 
@@ -132,6 +188,87 @@ Secure Shell
 
 .. note::
    - note
+
+----
+
+:blocky:`sshfs - Dateisystem`
+
+- ermoeglicht entferntes Dateisystem per SSH einzuhaengen
+- FUSE basierend (Filesystem in User Space)
+- sshfs...beispiel
+
+.. note::
+   - note
+
+
+----
+
+:blocky:`SSH-Schlüssel`
+
+.. code-block:: bash  
+  
+   [sue@kaktus ~]$ scp letter.pdf qitta@hitomi:~
+   qitta@hitomi's password:
+   letter.pdf                 100% 6297     6.2KB/s   00:00
+
+
+.. note::
+   - Bisher lief Authentifizierung über Passwort
+
+
+----
+
+
+:blocky:`Port Forwarding`
+
+.. code-block:: bash  
+  
+   [sue@kaktus ~]$ scp letter.pdf qitta@hitomi:~
+   qitta@hitomi's password:
+   letter.pdf                 100% 6297     6.2KB/s   00:00
+
+
+.. note::
+   - Bisher lief Authentifizierung über Passwort
+
+----
+
+
+:blocky:`X-Forwarding`
+
+.. code-block:: bash  
+  
+   [sue@kaktus ~]$ scp letter.pdf qitta@hitomi:~
+   qitta@hitomi's password:
+   letter.pdf                 100% 6297     6.2KB/s   00:00
+
+
+.. note::
+   - Bisher lief Authentifizierung über Passwort
+
+
+----
+
+
+:blocky:`SSH härten`
+
+- Grundkonfiguration auf manchen Systemen nur bedingt sinnvoll/sicher
+- In Config abzuaendern:
+
+  - PermitRootLogin no
+  - AllowedUsers UserA, Userb
+  - Evtl Port von 22 auf XY setzen um Skriptkiddie Attacken ins leere laufen
+    lassen
+  - XForwarding deaktivieren
+  - SSH Protokol 2
+  - von Password auf Public Key umstellen
+
+  Das sollte fuer 99% der User 'sicher' genug sein.
+  
+.. note::
+   - Bisher lief Authentifizierung über Passwort
+
+
 
 
 ----

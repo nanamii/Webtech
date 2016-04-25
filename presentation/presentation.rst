@@ -17,13 +17,16 @@
 .. role:: tiny
    :class: tiny
 
-           
+.. role:: colored
+   :class: colored
+
+          
 :id: first 
 
 SSH - 
 Secure Shell
 
-:tiny:`Susanne Kießling`
+:tiny:`Susanne Kießling (MIN)`
 
 .. note::
 
@@ -52,20 +55,22 @@ Secure Shell
    - note 
 
 **Was ist SSH?**
-  + Grundprinzip von SSH
-  + Kryptografie
-**Elementare Funktionen**
-  Remote
-**More on SSH**
-  Key on YubiKey
-  
-** Anwendungsbeispiele**
 
+**Grundprinzip von SSH**
+
+**Protokolle: SSH-1, SSH-2**
+
+**Elementare Funktionen (ssh, scp, sshfs)**
+
+**Ablauf und Authentifizierung**
+
+**SSH-Härtung**
+  
 ----
 
 :blocky:`Was ist SSH?`
 
-- **S** ecure **Sh** ell
+- Secure Shell
 - TCP/IP - Protokoll
 - Hauptanwendung: Verschlüsselte Netzwerkverbindung zu einem entfernten Gerät
 - Vorgänger: Telnet, RSH
@@ -75,28 +80,66 @@ Secure Shell
 
 ----
 
-:blocky:`Grundprinzip von SSH`
+:blocky:`Telnet - SSH`
 
 .. note::
    - note
 
-.. image:: images/telnet.png
+.. image:: images/ssh_telnet.png
    :align: left
-   :height: 400px
+   :height: 500px
 
-.. image:: images/ssh_prinzip.png
-   :align: right
+----
+
+:blocky:`Grundprinzip von SSH`
+
+Sichere Kommunikation über ein Netzwerk durch:
+
+- Verschlüsselung der Daten
+- Integrität
+- Authentifizierung
+
+.. note::
+   - note
+
+.. image:: images/grundprinzip.png
+   :align: left
    :height: 400px
 
 ----
 
 :blocky:`SSH-1 und SSH-2`
 
-- Jahreszahl, Funktionen, Nachteile, SSH-1 nicht mehr empfohlen
-- SSH-2: Erweiterungen
+**SSH-1:**
+
+ + Entwickelt von Tatu Ylönen (University of Technology, Helsinki)
+ + SSH1 (Implementierung) 1995 als Freie Software veröffentlicht
+ + :colored:`--> nicht mehr empfohlen,` Schwachstellen in der Integritätsprüfung 
+   wurden festgestellt (SSH-1 nutzt CRC)
+ 
 
 .. note::
-   - note
+   - CRC=Cyclic redundancy check
+   - HMAC= hash message authentication code
+
+     
+----
+
+:blocky:`SSH-1 und SSH-2`
+
+ 
+ **SSH-2:**
+
+ + Sicherheitslücken von SSH-1 schließen
+ + Statt CRC wird HMAC verwendet
+ + Wahlmöglichkeit zwischen verschiedenen symmetrischen
+   Verschlüsselungsverfahren
+ + Zusätzliche Funktionen
+
+
+.. note::
+   - CRC=Cyclic redundancy check
+   - HMAC= hash message authentication code
 
 ----
 
@@ -123,35 +166,20 @@ Secure Shell
    :align: left
    :height: 200px
 
-
-
-
-----
-
-:blocky:`Grundprinzip von SSH`
-
-- Schutz von Daten durch Verschlüsselung
-- Integrität der Kommunikation
-- Authentifizierung
-
-.. note::
-   - note
-
-.. image:: images/ssh_grundprinzip.png
-   :align: left
-   :height: 400px
-
 ----
 
 
-:blocky:`Let's start`
+:blocky:`Let's start ... mit OpenSSH`
 
  - Installation: apt-get install openssh, dnf install opensshd
- - Kaum Konfiguration nötig, näheres hierzu später
- - ssh (client) und sshd (d=daemon, server)
- - manpages zeigen
- - config zeigen
- - --> weitere Beispiele anhand OpenSSH
+ - Kaum Konfiguration notwendig, näheres hierzu später
+ - ssh (Client)
+ - sshd (Server, d=daemon)
+ 
+ **Im Folgenden:**
+
+ - Blick in die manpages von OpenSSH
+ - Server-Config
 
 .. note::
    - note 
@@ -164,13 +192,28 @@ Secure Shell
 
 :blocky:`Remote Terminal Session`
 
+Client --> Server in lokalem Netzwerk
+
 .. code-block:: bash  
    
-   [sue@kaktus ~]$ ssh qitta@hitomi
+   [sue@kaktus]$ ssh qitta@hitomi
    qitta@hitomi's password: 
    Last login: Fri Apr 22 21:24:20 2016 from 192.168.23.20
    ~ ❯ 
 
+
+Client --> Server unterschiedliche Netzwerke
+
+.. code-block:: bash
+
+   [sue@kaktus]$ ssh micra@login.rz.hs-augsburg.de
+   micra@login.rz.hs-augsburg.de's password:
+   Linux bug 3.2.0-4-amd64 #1 SMP Debian 3.2.65-1+deb7u1 x86_64
+   Plan your installation, and FAI installs your plan.
+   
+   Last login: Mon Apr 25 22:38:45 2016 
+   from p5088ff5b.dip0.t-ipconnect.de 
+   micra@bug:~$ 
 
 .. note::
    - note
@@ -191,29 +234,60 @@ Secure Shell
 
 ----
 
-:blocky:`sshfs - Dateisystem`
+:blocky:`sshfs - Dateisystem einhängen`
 
-- ermoeglicht entferntes Dateisystem per SSH einzuhaengen
+- Secure Shell File System
+- Ermöglicht, entferntes Dateisystem per SSH einzuhängen
 - FUSE basierend (Filesystem in User Space)
-- sshfs...beispiel
+
+- Mounting: sshfs [user@]host:[dir] mountpoint [options]
+- Unmounting: fusermount -u mountpoint
+
+
+.. code-block:: bash  
+
+
+    [sue@kaktus ~]$ sshfs micra@login.rz.hs-augsburg.de:
+    /rz2home/micra/Dokumente mount_rz
+    micra@login.rz.hs-augsburg.de's password:
+
+    [sue@kaktus ~]$ fusermount -u ~/mount_rz
 
 .. note::
    - note
 
+----
+
+:blocky:`Grober Ablauf`
+
+1. Client sendet Anfrage an Server (Port 22)
+2. Server gibt seine Identität, verwendetes Protokoll etc. bekannt
+3. Client erhält Warnung, falls er das erste Mal mit Server kommuniziert
+   --> Eintrag der Host-ID in known_hosts
+4. Erzeugung eines Session-Keys mit Diffie-Hellman Schlüsseltausch
+   (Stichwort: Forward Secrunity)
+5. Client wählt eine der vorgeschlagenen symmetrischen Verschlüsselungen (AES, Blowfish, 3DES, ...)
+
 
 ----
 
-:blocky:`SSH-Schlüssel`
+:blocky:`Authentifizierung`
 
-.. code-block:: bash  
-  
-   [sue@kaktus ~]$ scp letter.pdf qitta@hitomi:~
-   qitta@hitomi's password:
-   letter.pdf                 100% 6297     6.2KB/s   00:00
+**Bisher:** Benutzername und Passwort 
+**Empfehlenswert:** Public-Key-Authentifizierung
+
+ - Schlüsselpaar, bestehend aus privatem + öffentlichem Schlüssel
+ - Server generiert Zufalls-String (256bit) mit öffentlichem Schlüssel
+ - Client entschlüsselt String mit privatem Schlüssel
+ - Client kombiniert String mit Session-Key und generiert daraus eine
+   md5-Hashsumme
+ - Server führt dies ebenfalls durch und vergleicht md5-Summe
+ - Abgleich okay --> Client authentifiziert
 
 
 .. note::
-   - Bisher lief Authentifizierung über Passwort
+   - Um nur einen Grund zu nennen: Anforderungen an sicheres Passwort werden oft nicht eingehalten bzw.
+     Passwörter mit hoher Entropie sind häufig schwer zu merken
 
 
 ----
@@ -221,30 +295,15 @@ Secure Shell
 
 :blocky:`Port Forwarding`
 
-.. code-block:: bash  
-  
-   [sue@kaktus ~]$ scp letter.pdf qitta@hitomi:~
-   qitta@hitomi's password:
-   letter.pdf                 100% 6297     6.2KB/s   00:00
+- Verschlüsselung von Datenströmen anderer TCP-Andwendungen
+- Wird auch Tunneling genannt
 
+:blocky:`X Forwarding`
 
-.. note::
-   - Bisher lief Authentifizierung über Passwort
-
-----
-
-
-:blocky:`X-Forwarding`
-
-.. code-block:: bash  
-  
-   [sue@kaktus ~]$ scp letter.pdf qitta@hitomi:~
-   qitta@hitomi's password:
-   letter.pdf                 100% 6297     6.2KB/s   00:00
-
+- X-Window von Remote-Rechner erscheint auf Client
 
 .. note::
-   - Bisher lief Authentifizierung über Passwort
+   - note
 
 
 ----
@@ -253,22 +312,19 @@ Secure Shell
 :blocky:`SSH härten`
 
 - Grundkonfiguration auf manchen Systemen nur bedingt sinnvoll/sicher
-- In Config abzuaendern:
+- In Config abzuändern:
 
   - PermitRootLogin no
   - AllowedUsers UserA, Userb
-  - Evtl Port von 22 auf XY setzen um Skriptkiddie Attacken ins leere laufen
-    lassen
+  - Evtl. Port von 22 auf XY setzen, um Skriptkiddie-Attacken ins Leere laufen
+    zu lassen
   - XForwarding deaktivieren
-  - SSH Protokol 2
-  - von Password auf Public Key umstellen
+  - SSH Protokoll 2
+  - Authentifizierung: Von Password auf Public Key umstellen
 
-  Das sollte fuer 99% der User 'sicher' genug sein.
   
 .. note::
-   - Bisher lief Authentifizierung über Passwort
-
-
+  - Das sollte für den Großteil der Anwender ausreichend sicher sein.
 
 
 ----
@@ -279,296 +335,9 @@ Secure Shell
 + Even strong passwords can be leaked by service
 + The number of passwords to remember grows
 
-.. note::
-   - weak passwords: easy to crack by Brute Force, with dictionary attack
-   - strong passwords, which means passwords with high entropy, are also
-     saved on the services server you are logged in to, and it can be leaked
-
-   - Number of passwords grows: maybe you use a password manager, but
-     also the access to password manager needs to be protected
-
-.. image:: images/bruce.png
-   :align: right
-   :height: 300px
-
-
-------
-
-:blocky:`From outside`
-
-+ No removable parts
-+ Hermetically sealed plastic
-+ Almost indestructible
-
-.. note::   
-   - very lightweight device
-   - solid-state capacitive touch sensor
-
-.. image:: images/yubi_outside.png
-   :align: right
-   :height: 400px
-
-------
-
-:blocky:`How it works`
-
-.. note::   
-   - There are 2 slots which can be configured 
-      
-
-.. image:: images/how_works.png
-   :align: right
-   :height: 400px
-
-+ Slot 1: Short press 0.3 - 1.5 seconds
-+ Slot 2: Long press 2.5 seconds - 5 seconds
-
-
-------
-
-:blocky:`Basic Concept`
-
-+ Platform independent: Linux, Mac OS X, Windows
-+ OpenSource, code hosted on https://github.com/Yubico
-+ Acts like standard USB keyboard 
-+ --> No additional drivers required
-+ --> No battery needed
-
-.. note::
-  - HID (Human Interface Device)
-
-.. image:: images/hhkb.png
-   :align: right
-   :height: 200px
-
-
-
-------
-
-    :blocky:`Functions and Features`
-
-**One time password (OTP)**
-  e.g. Login to online services with 2FA
-**Static password**
-  e.g. System-Login, services without 2FA  
-**Open PGP**
-  Store your OpenPGP Keys
-
-**Near Field Communication (NFC)**
-
-.. note::
-   - that's only a part of all functions, which YubiKey offers 
-     the most interesting
-   
-------
-
-:blocky:`Usage Demonstration`
-
-    1. Output Demonstration: one-time password, static password
-    2. Login to GitHub with two-factor authentication
-
-
-.. note::
-   -  before telling more details, i will demonstrate
-      what happens if I touch the button of YubiKey
-   -  Slot 1 is configured with OTP - short press
-   -  next: login to GitHub, pretty simple
- 
-------
-
-:blocky:`YubiKey OTP`
-
-.. note:: 
-   -  it shows a simple representation of OTP function
-   -  YubiKey OTP is a 44 character string
-   -  128-bit encrypted, with AES (Advanced Encr. Standard), symmetric-key
-      algorithm
-   -  two major parts
-   -  first 12 characters is the YubiKey-Id, it identifies the YubiKey and does
-      not change
-   -  remaining 32 chars, that's the encrypted passcode
-   -  it consists of maltitude factors: Counter, Timestamp, Random
-      number, checksum
-   
-
-.. image:: images/otp.png
-   :align: right
-   :width: 90%
-
-  
-
------
-
-:blocky:`Secure Static Password`
-
-  - Not as secure as one-time passwords
-  - 16 to 64 characters/numbers
-  - Often used with additional manually entered part of password
-
-.. image:: images/static_pw.png
-   :align: center
-   :width: 90%
-
- 
-
------
-
-
-:blocky:`OpenPGP`
-
-+ Pretty Good Privacy(PGP), open standard
-+ Encrypt E-Mails, Digital Signature, Authentication
-+ Store your keys on YubiKey (smartcard)
-
-
-.. note::
-   - for whom of you, using OpenPGP 
-   - private key can not be stolen from PC
-   
------
-
-
-:blocky:`Configuration`
-
-
-.. image:: images/persotool.png
-   :align: center
-   :width: 90%
-
-
-.. note::
-   - the YubiKey Personalization Tool
-   - shows which slots are configured
-   - shows which functions are supported
-
------
-
-:blocky:`Where to use`
-
-+ Online Services
-   e.g.  GitHub, Dropbox, GoogleAccounts (U2F)
-+ Password Management
-   e.g. KeePass, LastPass
-+ System Login
-+ Disk Encryption
-
-and many more
-
-.. image:: images/github.svg
-   :align: left
-   :width: 15%
-
-.. image:: images/dropbox.png
-   :align: center
-   :width: 15%
-
-.. image:: images/lastpass.png
-   :align: left
-   :width: 25%
-
-.. image:: images/google3.png
-   :align: left
-   :width: 15%
-
-.. note::
-   - protect your online-identity    
-   - Extra layer of security for logging in to the password manager
-   - Show how easy it works, Login to github with two-factor auth
-   - U2F is an open authentication standard, hosted by the open-authentication
-     industry consortium FIDO Alliance, it enables internet users  to
-     securely access any number of online services
-
---------------------
-
-:blocky:`YubiKey versions`
-
-.. image:: images/versions.png
-   :align: center
-   :width: 120%
-
-.. note::
-   - Since the first version of YubiKey (Standard), there came up     
-     some additional functions and security improvements
-   - YubiKey4(PGP): YubiKey 4 introduces a new touch feature that allows to protect
-     the use of the private keys with an additional layer.
-   - COSTS: YubiKey Neo 50 EUR, Standard+Edge 30 EUR, FIDO 15 EUR
-   - FIDO is special version, with primary function Fido U2F (Universal sec.
-     factor)
-
---------------------
-
-:blocky:`YubiKey Nano`
-
-.. image:: images/nano.png
-   :align: center
-   :width: 60%
-
-.. note::
-   - fits exactly in USB-port
-   - usefull for laptops, which you carry around
-
------
-
-:blocky:`For Business`
-
-**Challenge: Protect data and systems**
-
-+ Securing identity of employees
-+ Securing access to accounts and systems
-+ Securing code development, data of employees
-+ Securing Mobile Devices
-
-
-.. note::
-   - As we heard yesterday, it's a challenge for enterprises to protect
-     their data e.g. if mobile devices get lost
-   - you know with YubiKey it need both: password and physical device
-
-------------------
-
-:blocky:`Enterprises using YubiKey`
-
-+ **Google**, uses  YubiKey NEO for all employees
-+ **GitHub** offers U2F for all developers
-+ **Cern**,the European Organization for Nuclear Research,
-  uses YubiKeys for securing critical services
-
-.. image:: images/enterprises.png
-   :align: left
-   :width: 80%
-
-.. note::
-   - Three examples of enterprises which use YubiKey
-
----------------------
-
-
-:blocky:`All in all`
-
-+ Simple to use
-+ Code is OpenSource, allows scrunity
-+ Powerfull functions
-
-**A pretty smart device to improve data security...
-and additional to have a cool fashion accessories.**
-
-.. image:: images/earring.png
-   :align: right
-   :width: 80%
-
-.. note::
-  - simple to use
-  - good usability
-  - Code is OpenSource, allows scrutiny(genaue Prüfung)
-  - if it's important for you to protect your online identity,
-    and access to your data in general,
-    maybe it might be worth considering to use the YubiKey
-
 
 
 ---------------------
 
-**Are there any questions?**
+**Vielen Dank ... und nutzt SSH ;-)**
 
-.. note::
-    - get lost: Recovery codes, backups

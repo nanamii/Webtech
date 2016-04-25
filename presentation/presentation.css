@@ -76,7 +76,7 @@ div#fin {
 
 .blocky {
     font-family: Vollkorn, Sketch, Verdana, Helvetica, Arial, sans-serif;
-    font-size: 250%;
+    font-size: 200%;
     font-style: normal;
 }
 
@@ -98,6 +98,11 @@ strong {
     font-weight: bold;
     font-size: 42%;
     vertical-align: super;
+}
+
+.colored {
+    font-weight: bold;
+    color: red;
 }
 
 div.excercise1 img{

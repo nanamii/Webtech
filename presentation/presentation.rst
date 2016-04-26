@@ -171,7 +171,10 @@ Sichere Kommunikation über ein Netzwerk durch:
 
 :blocky:`Let's start ... mit OpenSSH`
 
- - Installation: apt-get install openssh, dnf install opensshd
+ - Installation:
+   
+   - apt-get install openssh
+   - dnf install opensshd
  - Kaum Konfiguration notwendig, näheres hierzu später
  - ssh (Client)
  - sshd (Server, d=daemon)
@@ -264,8 +267,8 @@ Client --> Server unterschiedliche Netzwerke
 2. Server gibt seine Identität, verwendetes Protokoll etc. bekannt
 3. Client erhält Warnung, falls er das erste Mal mit Server kommuniziert
    --> Eintrag der Host-ID in known_hosts
-4. Erzeugung eines Session-Keys mit Diffie-Hellman Schlüsseltausch
-   (Stichwort: Forward Secrunity)
+4. Erzeugung eines Session-Keys mit Diffie-Hellman-Verfahren
+   (Stichwort: Forward Secrecy)
 5. Client wählt eine der vorgeschlagenen symmetrischen Verschlüsselungen (AES, Blowfish, 3DES, ...)
 
 
@@ -273,8 +276,8 @@ Client --> Server unterschiedliche Netzwerke
 
 :blocky:`Authentifizierung`
 
-**Bisher:** Benutzername und Passwort 
-**Empfehlenswert:** Public-Key-Authentifizierung
+ **Bisher:** Benutzername und Passwort 
+ **Empfehlenswert:** Public-Key-Authentifizierung
 
  - Schlüsselpaar, bestehend aus privatem + öffentlichem Schlüssel
  - Server generiert Zufalls-String (256bit) mit öffentlichem Schlüssel
@@ -297,10 +300,20 @@ Client --> Server unterschiedliche Netzwerke
 
 - Verschlüsselung von Datenströmen anderer TCP-Andwendungen
 - Wird auch Tunneling genannt
+- Beispiel: Sichere Verbindung zu einem Mail-Server
+
+``<local-port>:<connect-to-host>:<connect-to-port>``
+
+``ssh -L2001:localhost:143 user@mailserver.de``
+
+----
 
 :blocky:`X Forwarding`
 
-- X-Window von Remote-Rechner erscheint auf Client
+- X-Protokoll, Window-System für UNIX
+- Anwendungs-Fenster von Remote-Rechner erscheint auf Client
+  
+``ssh -X server.example.com``
 
 .. note::
    - note

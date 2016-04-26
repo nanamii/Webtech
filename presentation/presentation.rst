@@ -36,11 +36,11 @@ Secure Shell
 
 :blocky:`SSH - Old School?`
 
-- Erste Version von 1995
-- Lohnt sich näher damit zu beschäftigen !
-
 .. note::
-   - Note
+   - Erste Version des Protokolls von 1995
+   - Mächtiges Werkzeug
+   - Einfache Anwendung 
+   - Lohnt sich näher damit zu beschäftigen !
 
 
 .. image:: images/confused.png
@@ -70,13 +70,14 @@ Secure Shell
 
 :blocky:`Was ist SSH?`
 
-- Secure Shell
+- Abkürzung für Secure Shell
 - TCP/IP - Protokoll
 - Hauptanwendung: Verschlüsselte Netzwerkverbindung zu einem entfernten Gerät
-- Vorgänger: Telnet, RSH
+  herstellen
+- Vorgänger: Telnet, RSH (Remote Shell)
 
 .. note::
-   - note
+   - Remote Shell unter Unix, unsicher
 
 ----
 
@@ -112,14 +113,19 @@ Sichere Kommunikation über ein Netzwerk durch:
 
 **SSH-1:**
 
- + Entwickelt von Tatu Ylönen (University of Technology, Helsinki)
- + SSH1 (Implementierung) 1995 als Freie Software veröffentlicht
- + :colored:`--> nicht mehr empfohlen,` Schwachstellen in der Integritätsprüfung 
-   wurden festgestellt (SSH-1 nutzt CRC)
+ + 1995: Entwickelt von Tatu Ylönen (University of Technology, Helsinki)
+ + SSH1 (Implementierung) als Freie Software veröffentlicht
+ + :colored:`--> nicht mehr empfohlen,` enthält sicherheitskritische Schwachstellen
+   
  
 
 .. note::
-   - CRC=Cyclic redundancy check
+   - Implementierung, weil an seiner Uni Passwörter gesnifft wurden
+   - Vorerst nur für sich selbst, später veröffentlicht
+   - weil es Ad-hoc Implementierung war, traten zahlreiche Probleme auf
+   - Konnten ohne die Kompatibilität zu früheren Versionen zu verlieren,
+     nicht gefixt werden
+   - SSH-1 nutzt CRC=Cyclic redundancy check
    - HMAC= hash message authentication code
 
      
@@ -130,17 +136,23 @@ Sichere Kommunikation über ein Netzwerk durch:
  
  **SSH-2:**
 
- + Sicherheitslücken von SSH-1 schließen
- + Statt CRC wird HMAC verwendet
- + Wahlmöglichkeit zwischen verschiedenen symmetrischen
-   Verschlüsselungsverfahren
+ + 1996/1997 veröffentlicht
+ + Sicherheitslücken von SSH-1 behoben
  + Zusätzliche Funktionen
+ 
+ + 1998, SSH2 (Implementierung) mit strenger Lizenz, keine Freie
+   Software
+ + 1999, OpenBSD-Entwickler entwickeln mit OpenSSH eine freie Implementierung für
+   SSH-2-Protokoll
 
 
 .. note::
    - CRC=Cyclic redundancy check
    - HMAC= hash message authentication code
-
+   - Statt CRC wird HMAC verwendet
+   - Wahlmöglichkeit zwischen verschiedenen symmetrischen
+     Verschlüsselungsverfahren
+ 
 ----
 
 :blocky:`SSH-Implementierungen`
@@ -173,39 +185,24 @@ Sichere Kommunikation über ein Netzwerk durch:
 
  - Installation:
    
-   - apt-get install openssh
-   - dnf install opensshd
- - Kaum Konfiguration notwendig, näheres hierzu später
+   - sudo apt-get install openssh
+   - sudo dnf install openssh
+ - Kaum Konfiguration notwendig
  - ssh (Client)
  - sshd (Server, d=daemon)
  
  **Im Folgenden:**
 
  - Blick in die manpages von OpenSSH
- - Server-Config
 
 .. note::
-   - note 
+   - Konfiguration: Manches sicherlich sinnvoll, dazu später mehr 
 
 
 ----
 
 
-
-
 :blocky:`Remote Terminal Session`
-
-Client --> Server in lokalem Netzwerk
-
-.. code-block:: bash  
-   
-   [sue@kaktus]$ ssh qitta@hitomi
-   qitta@hitomi's password: 
-   Last login: Fri Apr 22 21:24:20 2016 from 192.168.23.20
-   ~ ❯ 
-
-
-Client --> Server unterschiedliche Netzwerke
 
 .. code-block:: bash
 
@@ -223,6 +220,13 @@ Client --> Server unterschiedliche Netzwerke
 
 ----
 
+:blocky:`Demo: Remote-Session`
+
+``ssh micra@login.rz.hs-augsburg.de``
+
+
+----
+
 :blocky:`Datenübertragung mit scp`
 
 .. code-block:: bash  
@@ -234,6 +238,12 @@ Client --> Server unterschiedliche Netzwerke
 
 .. note::
    - note
+
+----
+
+:blocky:`Demo: scp`
+
+``scp hello_all.txt micra@login.rz.hs-augsburg.de:~``
 
 ----
 
@@ -261,6 +271,12 @@ Client --> Server unterschiedliche Netzwerke
 
 ----
 
+:blocky:`Demo: sshfs`
+
+``sshfs micra@login.rz.hs-augsburg.de:~ mount_rz``
+    
+----
+
 :blocky:`Grober Ablauf`
 
 1. Client sendet Anfrage an Server (Port 22)
@@ -268,9 +284,10 @@ Client --> Server unterschiedliche Netzwerke
 3. Client erhält Warnung, falls er das erste Mal mit Server kommuniziert
    --> Eintrag der Host-ID in known_hosts
 4. Erzeugung eines Session-Keys mit Diffie-Hellman-Verfahren
-   (Stichwort: Forward Secrecy)
 5. Client wählt eine der vorgeschlagenen symmetrischen Verschlüsselungen (AES, Blowfish, 3DES, ...)
 
+.. note::
+   - note 
 
 ----
 
@@ -280,7 +297,9 @@ Client --> Server unterschiedliche Netzwerke
  **Empfehlenswert:** Public-Key-Authentifizierung
 
  - Schlüsselpaar, bestehend aus privatem + öffentlichem Schlüssel
- - Server generiert Zufalls-String (256bit) mit öffentlichem Schlüssel
+ - Schlüssel generieren: ssh-keygen
+ - Öffentlicher Schlüssel muss auf Remote-PC abgelegt werden
+ - Server generiert Zufalls-String mit öffentlichem Schlüssel
  - Client entschlüsselt String mit privatem Schlüssel
  - Client kombiniert String mit Session-Key und generiert daraus eine
    md5-Hashsumme
@@ -291,64 +310,62 @@ Client --> Server unterschiedliche Netzwerke
 .. note::
    - Um nur einen Grund zu nennen: Anforderungen an sicheres Passwort werden oft nicht eingehalten bzw.
      Passwörter mit hoher Entropie sind häufig schwer zu merken
+   - z.B. bei SSH-Key keine Wörterbuchattacken
 
+----
+
+:blocky:`Demo: Public-Key-Authentifizierung`
+
+``ssh-copy-id``: Im OpenSSH Paket enthalten, schreibt Public-Key in ``~/.ssh/authorized_keys`` auf dem Server
+
+``ssh -v micra@login.rz.hs-augsburg.de``
+    
 
 ----
 
 
-:blocky:`Port Forwarding`
+:blocky:`Port-Forwarding`
 
 - Verschlüsselung von Datenströmen anderer TCP-Andwendungen
 - Wird auch Tunneling genannt
 - Beispiel: Sichere Verbindung zu einem Mail-Server
 
-``<local-port>:<connect-to-host>:<connect-to-port>``
 
-``ssh -L2001:localhost:143 user@mailserver.de``
-
-----
-
-:blocky:`X Forwarding`
+:blocky:`X-Forwarding`
 
 - X-Protokoll, Window-System für UNIX
 - Anwendungs-Fenster von Remote-Rechner erscheint auf Client
   
-``ssh -X server.example.com``
-
-.. note::
-   - note
-
-
 ----
 
 
-:blocky:`SSH härten`
+:blocky:`SSH-Härtung`
 
 - Grundkonfiguration auf manchen Systemen nur bedingt sinnvoll/sicher
-- In Config abzuändern:
+- In config abzuändern:
 
-  - PermitRootLogin no
-  - AllowedUsers UserA, Userb
-  - Evtl. Port von 22 auf XY setzen, um Skriptkiddie-Attacken ins Leere laufen
+  - PermitRootLogin **no**
+  - AllowUsers **UserA, UserB**
+  - Port **22** evtl. auf XY setzen, um Skriptkiddie-Attacken ins Leere laufen
     zu lassen
-  - XForwarding deaktivieren
-  - SSH Protokoll 2
-  - Authentifizierung: Von Password auf Public Key umstellen
+  - X11Forwarding **no**
+  - Protocol **2**
+  - PubkeyAuthentication **yes**
 
   
 .. note::
-  - Das sollte für den Großteil der Anwender ausreichend sicher sein.
+    - AllowUsers, nur diese User haben Zugriff
+    - Das sollte für den Großteil der Anwender ausreichend sicher sein.
 
 
 ----
 
-:blocky:`Why 2F authentication`
+:blocky:`More on SSH`
 
-+ Weak passwords
-+ Even strong passwords can be leaked by service
-+ The number of passwords to remember grows
-
-
++ Agenten
++ auto-ssh 
++ Verschlüsselungsalgorithmen
++ ...
 
 ---------------------
 

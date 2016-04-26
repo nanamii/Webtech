@@ -231,9 +231,10 @@ Sichere Kommunikation über ein Netzwerk durch:
 
 .. code-block:: bash  
   
-   [sue@kaktus ~]$ scp letter.pdf qitta@hitomi:~
-   qitta@hitomi's password:
-   letter.pdf                 100% 6297     6.2KB/s   00:00
+   [sue@kaktus ~]$ scp hello_all.txt
+   micra@login.rz.hs-augsburg.de:~ 
+   micra@login.rz.hs-augsburg.de's password:
+   hello_all.txt        100% 6297     6.2KB/s   00:00
 
 
 .. note::
@@ -252,9 +253,10 @@ Sichere Kommunikation über ein Netzwerk durch:
 - Secure Shell File System
 - Ermöglicht, entferntes Dateisystem per SSH einzuhängen
 - FUSE basierend (Filesystem in User Space)
-
-- Mounting: sshfs [user@]host:[dir] mountpoint [options]
-- Unmounting: fusermount -u mountpoint
+- **Mounting:**
+   + sshfs [user@]host:[dir] mountpoint [options]
+- **Unmounting:**
+   + fusermount -u mountpoint
 
 
 .. code-block:: bash  
@@ -362,12 +364,18 @@ Sichere Kommunikation über ein Netzwerk durch:
 
 :blocky:`More on SSH`
 
-+ Agenten
++ ssh-agent
 + auto-ssh 
 + Verschlüsselungsalgorithmen
 + ...
 
+.. note::
+    - ssh-agent: Verwaltung von privaten Schlüsseln für Public-Key-Auth. auf dem
+      Server
+
 ---------------------
+
+
 
 **Vielen Dank ... und nutzt SSH ;-)**
 

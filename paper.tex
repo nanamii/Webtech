@@ -41,91 +41,22 @@ aslkdjfh.
 Die Übertragung von Daten innerhalb von Computernetzwerken geschieht ohne
 entsprechende Vorkehrungen grundsätzlich ungesichert. E-Mails, Passwörter und sämtliche Daten, die übertragen werden, können abgefangen und gelesen werden. SSH (Secure Shell) ist ein Protokoll, das die verschlüsselte Übertragung von Daten über ein Netzwerk ermöglicht \cite{SSH}.
 Trotz zahlreicher Berichterstattung über die Folgen von sorglosem Umgang mit Daten in Computernetzwerken, wozu natürlich auch das World Wide Web gehört, ändern viele Nutzer
-ihr Verhalten diesbezüglich nicht. Beispiel schlechte Passwörter/Bruce Schneier?
- 
- - Secure Shell, Lizenz   
+ihr Verhalten diesbezüglich nicht. Die Sicherheit von privaten Daten ist ein hochaktuelles Thema. SSH (als Protokoll) und dessen Implementierungen stellen eine Möglichkeit dar, Daten innerhalb eines Computernetzwerks sicher zu übertragen. Ziel ist es nun, einen Überblick zu SSH zu geben. OpenSSH dient anschließend als Beispiel-Implementierung, anhand derer die Funktionalitäten gezeigt werden. Der Ablauf eines Verbindungsaufbaus und die verwendeten Verschlüsselungsalgorithmen werden gezeigt. Auf aktuelle sicherheitskritische BUGs wird eingegangen.
 
+--> evtl. als aktuell erwähnen, dass es auch SSH für mobile Betriebssysteme gibt
+--> 
+
+ schlechte Passwörter/Bruce Schneier?
+ 
 
 SSH (Secure Shell) ist eine unixoide \cite{knuthwebsite} Tralalala...
 
-\begin{itemize}
-  \item sadasdasd
-  \item asdasdasd
-\end{itemize}
-\begin{enumerate}
-  \item sadasdasd
-  \item asdasdasd
-\end{enumerate}
-\begin{enumerateArabic}
-  \item sadasdasd
-  \item asdasdasd
-\end{enumerateArabic}
-\begin{enumerateRoman}
-  \item sadasdasd
-  \item asdasdasd
-\end{enumerateRoman}
-
-\begin{itemize}
-  \item sadasdasd
-       \begin{itemize}
-          \item sadasdasd
-                \begin{itemize}
-                   \item sadasdasd
-                         \begin{itemize}
-                            \item sadasdasd
-                            \item asdasdasd
-                         \end{itemize}
-                   \item \begin{itemize}
-                            \item sadasdasd
-                            \item asdasdasd
-                         \end{itemize}
-                \end{itemize}
-          \item asdasdasd
-       \end{itemize}
-  \item
-       \begin{itemize}
-          \item sadasdasd
-          \item asdasdasd
-       \end{itemize}
-\end{itemize}
-
-\newpage 
 
 asljkdfh asljkdfh alskjdfh lajskdfh. dasdkf hjasdfh adköshf asjlkdf
-hasjldkf hlasjkdfh jl hasdljka shdfasdfa sdfasdf\footnote{sdfsdfs dsfsdfsd
-  sdfsdfsdfs sdfsdfsdsdf sdf sdf sdf sdf sdf sdfsdf sdf sdf sdf sdf sdf sfs df
-  s sdfsdf sdfsdfsdf sdf sdf sdf sdf sdf sdf sdf sdfsd f }
-asdfasdfasdfasdfasdf asdfasdfasdfasdfasd
-asdfasdfasdfasdfasdffasfdasdf.hasdljk ashd fasdfasd fasdf\footnote{sdfsdfs
-  dsfsdfsd sdfsdfsdfs sdfsdfsdsdf sdf sdf sdf sdf sdf sdfsdf sdf sdf sdf sdf
-  sdf sfs df s sdfsdf sdfsdfsdf sdf sdf sdf sdf sdf sdf sdf sdfsd f }
-asdfasdfasdfasdfasdf asdfasdfasdfasdfasd asdfasdfasdfasdfasdffasfdasdf.
-aaasdfasdf asdfsdfasdfasdfasdf asdfasdfasdfasdfas
-\begin{longitemize}[\textbf{abcdefg}]
-  \item[\textbf{abcdef}]  sadasd asd asd asda sdasdasd asd asd asd asd as 
-                          sadasd asd asd asda sdasdasd asd asd asd asd as
-  \item[\textbf{abcdefg}] sadasd asd asd asda sdasdasd asd asd asd asd as
-                          sadasd asd asd asda sdasdasd asd asd asd asd as
-  \item[\textbf{abcdefghijklm}]
-                          sadasd asd asd asda sdasdasd asd asd asd asd as
-                          sadasd asd asd asda sdasdasd asd asd asd asd as
-  \item[\textbf{abcdefg}] sadasd asd asd asda sdasdasd asd asd asd asd as
-                          sadasd asd asd asda sdasdasd asd asd asd asd as
-\end{longitemize}
+hasjldkf hlasjkdfh jl hasdljka shdfasdfa sdfasdf\footnote{sdfsdfs dsfsdfsd}
 
-asljkdfh asljkdfh alskjdfh lajskdfh. dasdkf hjasdfh adköshf asjlkdf hasjldkf
-hlasjkdfh jl hasdljkashdfasdfasdfasdf asdfasdfasdfasdfasdf asdfasdfasdfasdfasd
-asdfasdfasdfasdfasdffasfdasdf. aaasdfasdf asdfsdfasdfasdfasdf
-asdfasdfasdfasdfas
-\begin{longitemize}
-  \item[abcdef]   sadasd asd asd asda sdasdasd asd asd asd asd as
-  \item[abcdefg]  sadasd asd asd asda sdasdasd asd asd asd asd as
-  \item[abcdefgh] sadasd asd asd asda sdasdasd asd asd asd asd as
-  \item[abcdefg]  sadasd asd asd asda sdasdasd asd asd asd asd as
-\end{longitemize}
-asljkdfh asljkdfh alskjdfh lajskdfh. dasdkf hjasdfesh adköshf asjlkdf hasjldkf
-hlasjkdfh jl hasdljkashdfasdfasdfasdf asdfasdfasdfasdfasdf asdfasdfasdfasdfasd
-asdfasdfasdfasdfasdffasfdasdf. aaasdfasdf asdfsdfasdfasdfasdf asdfasdfasdfasdfas
+
+
 \newpage
 
 \section{Grundprinzip von SSH}
@@ -139,134 +70,77 @@ asdfasdfasdfasdfasdffasfdasdf. aaasdfasdf asdfsdfasdfasdfasdf asdfasdfasdfasdfas
 \CAL{R} \\
 \NT{ein Terminal} $\Blank \nin \{\}$
 
-asljkdfh asljkdfh alskjdfh lajskdfh. dasdkf hjasdfh adköshf asjlkdf hasjldkf
-hlasjkdfh jl hasdljkashdfasdfasdfasdf asdfasdfasdfasdfasdf asdfasdfasdfasdfasd
-asdfasdfasdfasdfasdffasfdasdf. aaasdfasdf asdfsdfasdfasdfasdf asdfasdfasdfasdfasfdd 
-\begin{program}
-if \=(a==b)
-   \>print "xxx"; \RightComment{(Drucke \PF{"xxx"})}
+SSH verschlüsselt die forlaufende Verbindung zwischen Computern in einem Netzwerk. Dazu verwendet SSH eine Client/Server-Architektur. 
 
-beg\tab=in
-  print "xxx";    \RightCComment{Drucke \PF{"xxx"}}  
-  print "yyy";    \RightCPPComment{Drucke \PF{"yyy"}}  
-  \tab-
-end
-begin
-  \tab+
-  print "xxx"; \JavaComment{Drucke \PF{"xxx"}}  
-  print "yyy"; \QuadScriptComment{Drucke \PF{"yyy"}} 
-  \tab-
-end
-\end{program}
-asljkdfh asljkdfh alskjdfh lajskdfh. dasdkf hjasdfh adköshf asjlkdf hasjldkf
-hlasjkdfh jl hasdljkashdfasdfasdfasdf asdfasdfasdfasdfasdf asdfasdfasdfasdfasd
-asdfasdfasdfasdfasdffasfdasdf. aaasdfasdf asdfsdfasdfasdfasdf asdfasdfasdfasdfasfdd 
+\includegraphics[width=\linewidth]{./images/grundprinzip.png}
 
-\begin{program}
-if (a==b)
-begin
-  \tab+
-  print "xxx";
-  print "yyy";
-  \tab-
-end
-\end{program}
-
-asljkdfh asljkdfh alskjdfh lajskdfh. dasdkf hjasdfh adköshf asjlkdf hasjldkf
-hlasjkdfh jl hasdljkashdfasdfasdfasdf asdfasdfasdfasdfasdf asdfasdfasdfasdfasd
-asdfasdfasdfasdfasdffasfdasdf. aaasdfasdf asdfsdfasdfasdfasdf asdfasdfasdfasdfasfdd 
 
 \subsection{Protokolle}
 SSH-1, SSH-2
 
 \subsection{Implementierungen}
 
+\paragraph{Dropbear} Ist eine Implementierung des SSH2-Protokolls und steht unter der MIT-Lizenz.
+\paragraph{Mosh} Bietet weitere Funktionalitäten, vorallem für mobile Nutzer. Die Verbindung wird bei Roaming aufrecht erhalten. Zusätzlich bietet Mosh eine optimierte Latenz, \Dh ...
+\paragraph{Lsh}
+\paragraph{PuTTY} MIT-Lizenz, überwiegend für Windows.
+\paragraph{OpenSSH}
+
 \section{OpenSSH}
 
 OpenSSH -- eine der bekanntesten Implemetierungen des SSH-Protokolls -- dient nun dazu,
 elemnentare Funktionalitäten vorzustellen. 
 
+--> beinhaltet Server und Client
+--> einfaches Installieren über den Paketmanager
 
-dfsdf hjsdjlfh sdljf hsldjf hsaldjkf hasldjkfh asdljkfh asdjlfh asdljkfh
-asdljkfhas dljf sdaf. as dfkljhasdlkfj hasdljkf hasdljfkh asldjkfh sdfsdjk
-hsjlkdfh sjldkf hasldjkf hasdljkfh asldjkfh asljkdfh aslekjf haljksdfh
-wpqeuior zw0euifh y<lmfhaewiopufhz xclvbhxlydjkvh ylxkjcvh alsdjkfh aljkfh
-asofh aljsdkf haljksdf haljksdfh aljksdfh asljkdfh aljksdfh alskjdfh alskjdfh
-asljkdfh asljkdfh alskjdfh lajskdfh. dasdkf hjasdfh adköshf asjlkdf hasjldkf
-hlasjkdfh jl hasdljkashdfasdfasdfasdf asdfasdfasdfasdfasdf asdfasdfasdfasdfasd
-asdfasdfasdfasdfasdffasfdasdf. aaasdfasdf asdfsdfasdfasdfasdf asdfasdfasdfasdfasfdd 
+\subsection{Remote Terminal Session}
+
+\begin{program}
+[sue@kaktus]\$ ssh micra@login.rz.hs-augsburg.de
+micra@login.rz.hs-augsburg.de's password:
+%Linux bug 3.2.0-4-amd64 #1 SMP Debian 3.2.65-1+deb7u1 x86_64
+Plan your installation, and FAI installs your plan.
+
+Last login: Mon Apr 25 22:38:45 2016
+from p5088ff5b.dip0.t-ipconnect.de
+micra@bug:~\$
+
+\end{program}
+
+\subsection{Datenübertragung mit \IT{scp}}
+
+\begin{program}
+[sue@kaktus ~]\$ scp hello\_all.txt
+micra@login.rz.hs-augsburg.de:~
+micra@login.rz.hs-augsburg.de's password:
+hello\_all.txt        100\% 6297     6.2KB/s   00:00
+\end{program}
+
+\subsection{Dateisystem einhängen mit \IT{sshfs}}
+
+\begin{program}
+sshfs [user@]host:[dir] mountpoint [options]
+\end{program}
+
+\subsection{Public-Key-Authentifizierung}
+\subsection{Port-Forwarding}
+\subsection{X-Forwarding}
+\subsection{Agenten?}
+
+
+\section{Sicherheitsrelevante Betrachtung}
+\subsection{Verschlüsselungsalgorithmen bei SSH}
+\subsection{Ablauf einer sicheren Verbindung}
+\subsection{Aktuelle Schwachstellen}
+\subsection{Anforderungen an den Serveradministrator}
+
 
 \newpage
 
-\section*{Sicherheitsaspekte}
-\subsection*{Einleitung}
-\subsubsection*{Einleitung}
-\paragraph*{Einleitung}
-\subparagraph*{Einleitung}
-dfsdf hjsdjlfh sdljf hsldjf hsaldjkf hasldjkfh asdljkfh asdjlfh asdljkfh
-asdljkfhas dljf sdaf. as dfkljhasdlkfj hasdljkf hasdljfkh asldjkfh sdfsdjk
-hsjlkdfh sjldkf hasldjkf hasdljkfh asldjkfh asljkdfh aslekjf haljksdfh
-
-\section*{Einleitung}
-dfsdf hjsdjlfh sdljf hsldjf hsaldjkf hasldjkfh asdljkfh asdjlfh asdljkfh
-asdljkfhas dljf sdaf. as dfkljhasdlkfj hasdljkf hasdljfkh asldjkfh sdfsdjk
-hsjlkdfh sjldkf hasldjkf hasdljkfh asldjkfh asljkdfh aslekjf haljksdfh
-
-\subsection*{Einleitung}
-dfsdf hjsdjlfh sdljf hsldjf hsaldjkf hasldjkfh asdljkfh asdjlfh asdljkfh
-asdljkfhas dljf sdaf. as dfkljhasdlkfj hasdljkf hasdljfkh asldjkfh sdfsdjk
-hsjlkdfh sjldkf hasldjkf hasdljkfh asldjkfh asljkdfh aslekjf haljksdfh
-
-\subsubsection*{Einleitung}
-dfsdf hjsdjlfh sdljf hsldjf hsaldjkf hasldjkfh asdljkfh asdjlfh asdljkfh
-asdljkfhas dljf sdaf. as dfkljhasdlkfj hasdljkf hasdljfkh asldjkfh sdfsdjk
-hsjlkdfh sjldkf hasldjkf hasdljkfh asldjkfh asljkdfh aslekjf haljksdfh
-
-\paragraph*{Einleitung}
-dfsdf hjsdjlfh sdljf hsldjf hsaldjkf hasldjkfh asdljkfh asdjlfh asdljkfh
-asdljkfhas dljf sdaf. as dfkljhasdlkfj hasdljkf hasdljfkh asldjkfh sdfsdjk
-hsjlkdfh sjldkf hasldjkf hasdljkfh asldjkfh asljkdfh aslekjf haljksdfh
-
-\subparagraph*{Einleitung}
-dfsdf hjsdjlfh sdljf hsldjf hsaldjkf hasldjkfh asdljkfh asdjlfh asdljkfh
-asdljkfhas dljf sdaf. as dfkljhasdlkfj hasdljkf hasdljfkh asldjkfh sdfsdjk
-hsjlkdfh sjldkf hasldjkf hasdljkfh asldjkfh asljkdfh aslekjf haljksdfh
-
-\newpage
-
-\section{Einleitung}
-\subsection{Einleitung}
-\subsubsection{Einleitung}
-\paragraph{Einleitung}
-\subparagraph{Einleitung}
-dfsdf hjsdjlfh sdljf hsldjf hsaldjkf hasldjkfh asdljkfh asdjlfh asdljkfh
-asdljkfhas dljf sdaf. as dfkljhasdlkfj hasdljkf hasdljfkh asldjkfh sdfsdjk
-hsjlkdfh sjldkf hasldjkf hasdljkfh asldjkfh asljkdfh aslekjf haljksdfh
 
 \section{Zusammenfassung}
-dfsdf hjsdjlfh sdljf hsldjf hsaldjkf hasldjkfh asdljkfh asdjlfh asdljkfh
-asdljkfhas dljf sdaf. as dfkljhasdlkfj hasdljkf hasdljfkh asldjkfh sdfsdjk
-hsjlkdfh sjldkf hasldjkf hasdljkfh asldjkfh asljkdfh aslekjf haljksdfh
 
-\subsection{Einleitung}
-dfsdf hjsdjlfh sdljf hsldjf hsaldjkf hasldjkfh asdljkfh asdjlfh asdljkfh
-asdljkfhas dljf sdaf. as dfkljhasdlkfj hasdljkf hasdljfkh asldjkfh sdfsdjk
-hsjlkdfh sjldkf hasldjkf hasdljkfh asldjkfh asljkdfh aslekjf haljksdfh
-
-\subsubsection{Einleitung}
-dfsdf hjsdjlfh sdljf hsldjf hsaldjkf hasldjkfh asdljkfh asdjlfh asdljkfh
-asdljkfhas dljf sdaf. as dfkljhasdlkfj hasdljkf hasdljfkh asldjkfh sdfsdjk
-hsjlkdfh sjldkf hasldjkf hasdljkfh asldjkfh asljkdfh aslekjf haljksdfh
-
-\paragraph{Einleitung}
-dfsdf hjsdjlfh sdljf hsldjf hsaldjkf hasldjkfh asdljkfh asdjlfh asdljkfh
-asdljkfhas dljf sdaf. as dfkljhasdlkfj hasdljkf hasdljfkh asldjkfh sdfsdjk
-hsjlkdfh sjldkf hasldjkf hasdljkfh asldjkfh asljkdfh aslekjf haljksdfh
-
-\subparagraph{Einleitung}
-dfsdf hjsdjlfh sdljf hsldjf hsaldjkf hasldjkfh asdljkfh asdjlfh asdljkfh
-asdljkfhas dljf sdaf. as dfkljhasdlkfj hasdljkf hasdljfkh asldjkfh sdfsdjk
-hsjlkdfh sjldkf hasldjkf hasdljkfh asldjkfh asljkdfh aslekjf haljksdfh
 
 \bibliography{sample}
 \bibliographystyle{unsrt}

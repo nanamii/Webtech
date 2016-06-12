@@ -23,10 +23,12 @@ asljkdfh alsjkdfh asljkdfh asljkdfh asljkdfh asljkdfh asldkjfh asldkjfh
 aslkdjfh.
 
 Asljkdfh alsjkdfh asljkdfh asljkdfh asljkdfh asljkdfh asldkjfh asldkjfh
-
+asljkdfh alsjkdfh asljkdfh asljkdfh asljkdfh asljkdfh asldkjfh asldkjfh
+asljkdfh alsjkdfh asljkdfh asljkdfh asljkdfh asljkdfh asldkjfh asldkjfh
+aslkdjfh.
 \end{abstract}
 
-\keywords{Content Management, Database}
+\keywords{SSH, OpenSSH, Verschlüsselung}
 \categories{Allgemein}
 
 \begin{document}
@@ -39,38 +41,26 @@ Asljkdfh alsjkdfh asljkdfh asljkdfh asljkdfh asljkdfh asldkjfh asldkjfh
 Die Übertragung von Daten innerhalb von Computernetzwerken geschieht ohne
 entsprechende Vorkehrungen grundsätzlich ungesichert. E-Mails, Passwörter und sämtliche Daten, die übertragen werden, können abgefangen und gelesen werden. SSH (Secure Shell) ist ein Protokoll, das die verschlüsselte Übertragung von Daten über ein Netzwerk ermöglicht \cite{SSH}.
 Trotz zahlreicher Berichterstattung über die Folgen von sorglosem Umgang mit Daten in Computernetzwerken, wozu natürlich auch das World Wide Web gehört, ändern viele Nutzer
-ihr Verhalten diesbezüglich nicht. Die Sicherheit von privaten Daten ist ein hochaktuelles Thema. SSH (als Protokoll) und dessen Implementierungen stellen eine Möglichkeit dar, Daten innerhalb eines Computernetzwerks sicher zu übertragen. Ziel ist es nun, einen Überblick zu SSH zu geben. OpenSSH dient anschließend als Beispiel-Implementierung, anhand derer die Funktionalitäten gezeigt werden. Der Ablauf eines Verbindungsaufbaus und die verwendeten Verschlüsselungsalgorithmen werden gezeigt. Auf aktuelle sicherheitskritische BUGs wird eingegangen.
+ihr Verhalten diesbezüglich nicht. Die Sicherheit von privaten Daten ist ein hochaktuelles Thema. SSH (als Protokoll) und dessen Implementierungen stellen eine Möglichkeit dar, Daten innerhalb eines Computernetzwerks sicher zu übertragen. Ziel ist es nun, einen Überblick zu SSH zu geben. OpenSSH dient anschließend als Beispiel-Implementierung, anhand derer die Funktionalitäten gezeigt werden. Der Ablauf eines Verbindungsaufbaus und die verwendeten Verschlüsselungsalgorithmen werden erläutert. Auf aktuelle sicherheitskritische BUGs wird eingegangen. Zur Abgrenzung zwischen der Bezeichnung von SSH als Protokoll bzw. als Implementierung, wird an dieser Stelle festgelegt, dass \IT{SSH} das Protokoll bezeichnet und die Implementierungen explizit benannt werden (bsp. \IT{OpenSSH}).
 
 --> evtl. als aktuell erwähnen, dass es auch SSH für mobile Betriebssysteme gibt
---> 
 
  schlechte Passwörter/Bruce Schneier?
- 
 
 SSH (Secure Shell) ist eine unixoide \cite{knuthwebsite} Tralalala...
-
-
-asljkdfh asljkdfh alskjdfh lajskdfh. dasdkf hjasdfh adköshf asjlkdf
-hasjldkf hlasjkdfh jl hasdljka shdfasdfa sdfasdf\footnote{sdfsdfs dsfsdfsd}
 
 
 
 \newpage
 
-\section{Grundprinzip von SSH}
-\bzgl \bzw \ca \Dh \evtl \etc \ggf \iAllg \oAe \uAe \usf \usw \vgl \zB \\
-\cf \cp \ie \eg \etc \wrt \viz \vs \Wlog \\
-\PF{"a"} \\
-\RM{bla} \TT{bla} \\
-\BF{bla \MD{bla} bla} \\
-\IT{bla \MD{bla} bla} \\
-\SC{bla} \EM{bla} \\
-\CAL{R} \\
-\NT{ein Terminal} $\Blank \nin \{\}$
+\section{Grundlegendes zu SSH}
 
-SSH verschlüsselt die forlaufende Verbindung zwischen Computern in einem Netzwerk. Dazu verwendet SSH eine Client/Server-Architektur. 
+
+SSH verschlüsselt die forlaufende Verbindung zwischen Computern in einem Netzwerk. Dazu verwendet SSH eine Client/Server-Architektur. Abbildung XXX veranschaulicht das Grundprinzip von SSH, das laut seiner Spezifikation die Authentifizierung, die Verschlüsselung und die Integrität von Daten, die in einem Netzwerk übertragen werden, beinhaltet.
 
 \includegraphics[width=\linewidth]{./images/grundprinzip.png}
+
+Wie in der Abbildung zu sehen ist, verlangt eine SSH-Verbindung zwei Authentifizierungen \cite{SSH, Seite 47}. Der Server authentifiziert sich beim Client und umgekehrt (näheres zum Ablauf unter XX). Zum Verschlüsseln der Daten werden zufällige Sitzungsschlüssel ausgehandelt. Nach Beenden der Sitzung verlieren diese Schlüssel ihre Gültigkeit. Unter Datenintegrität versteht man die Gewissheit, dass die Daten auf dem Weg von Sender zu Empfänger unverändert bleiben. 
 
 
 \subsection{Protokolle}
@@ -78,11 +68,17 @@ SSH-1, SSH-2
 
 \subsection{Implementierungen}
 
-\paragraph{Dropbear} Ist eine Implementierung des SSH2-Protokolls und steht unter der MIT-Lizenz.
+Als erste Implementierung gilt blalbalalalalala.
+
+\paragraph{Dropbear} Ist eine Implementierung des SSH2-Protokolls und steht unter der MIT-Lizenz \cite{dropbear}. Dropbear ist vorallem für Systeme mit geringer Prozessorleistung und geringer Speicherkapazität interessant. Es ist auf verschiedenen POSIX-basierten Systemen lauffähig. Eine entsprechende Auflistung ist auf der offiziellen Webseite von Dropbear \footnote{https://matt.ucc.asn.au/dropbear/dropbear.html\#platforms} zu finden.
+
 \paragraph{Mosh} Bietet weitere Funktionalitäten, vorallem für mobile Nutzer. Die Verbindung wird bei Roaming aufrecht erhalten. Zusätzlich bietet Mosh eine optimierte Latenz, \Dh ...
 \paragraph{Lsh}
 \paragraph{PuTTY} MIT-Lizenz, überwiegend für Windows.
 \paragraph{OpenSSH}
+
+
+
 
 \section{OpenSSH}
 
@@ -139,9 +135,22 @@ sshfs [user@]host:[dir] mountpoint [options]
 
 \section{Zusammenfassung}
 
+\bzgl \bzw \ca \Dh \evtl \etc \ggf \iAllg \oAe \uAe \usf \usw \vgl \zB \\
+\cf \cp \ie \eg \etc \wrt \viz \vs \Wlog \\
+\PF{"a"} \\
+\RM{bla} \TT{bla} \\
+\BF{bla \MD{bla} bla} \\
+\IT{bla \MD{bla} bla} \\
+\SC{bla} \EM{bla} \\
+\CAL{R} \\
+\NT{ein Terminal} $\Blank \nin \{\}$
+
+
+asljkdfh asljkdfh alskjdfh lajskdfh. dasdkf hjasdfh adköshf asjlkdf
+hasjldkf hlasjkdfh jl hasdljka shdfasdfa sdfasdf\footnote{sdfsdfs dsfsdfsd}
 
 \bibliography{sample}
-\bibliographystyle{unsrt}
+\bibliographystyle{abbrv}
 
 
 \end{document}

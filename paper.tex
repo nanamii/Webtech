@@ -43,11 +43,14 @@ entsprechende Vorkehrungen grundsätzlich ungesichert. E-Mails, Passwörter und 
 Trotz zahlreicher Berichterstattung über die Folgen von sorglosem Umgang mit Daten in Computernetzwerken, wozu natürlich auch das World Wide Web gehört, ändern viele Nutzer
 ihr Verhalten diesbezüglich nicht. Die Sicherheit von privaten Daten ist ein hochaktuelles Thema. SSH (als Protokoll) und dessen Implementierungen stellen eine Möglichkeit dar, Daten innerhalb eines Computernetzwerks sicher zu übertragen. Ziel ist es nun, einen Überblick zu SSH zu geben. OpenSSH dient anschließend als Beispiel-Implementierung, anhand derer die Funktionalitäten gezeigt werden. Der Ablauf eines Verbindungsaufbaus und die verwendeten Verschlüsselungsalgorithmen werden erläutert. Auf aktuelle sicherheitskritische BUGs wird eingegangen. Zur Abgrenzung zwischen der Bezeichnung von SSH als Protokoll bzw. als Implementierung, wird an dieser Stelle festgelegt, dass \IT{SSH} das Protokoll bezeichnet und die Implementierungen explizit benannt werden (bsp. \IT{OpenSSH}).
 
+--> Bereits 19.. entwickelt, in zahlreichen Produkten implementiert
+--> Vorgänger telnet, rsh, alles ungesichert
+
 --> evtl. als aktuell erwähnen, dass es auch SSH für mobile Betriebssysteme gibt
 
  schlechte Passwörter/Bruce Schneier?
 
-SSH (Secure Shell) ist eine unixoide \cite{knuthwebsite} Tralalala...
+SSH (Secure Shell) ist eine unixoide Tralalala...
 
 
 
@@ -60,15 +63,22 @@ SSH verschlüsselt die forlaufende Verbindung zwischen Computern in einem Netzwe
 
 \includegraphics[width=\linewidth]{./images/grundprinzip.png}
 
-Wie in der Abbildung zu sehen ist, verlangt eine SSH-Verbindung zwei Authentifizierungen \cite{SSH, Seite 47}. Der Server authentifiziert sich beim Client und umgekehrt (näheres zum Ablauf unter XX). Zum Verschlüsseln der Daten werden zufällige Sitzungsschlüssel ausgehandelt. Nach Beenden der Sitzung verlieren diese Schlüssel ihre Gültigkeit. Unter Datenintegrität versteht man die Gewissheit, dass die Daten auf dem Weg von Sender zu Empfänger unverändert bleiben. 
+Wie in der Abbildung zu sehen ist, verlangt eine SSH-Verbindung zwei Authentifizierungen \cite{SSH, Seite 47}. Der Server authentifiziert sich beim Client und umgekehrt (näheres zum Ablauf unter XX). Zum Verschlüsseln der Daten werden zufällige Sitzungsschlüssel ausgehandelt. Nach Beenden der Sitzung verlieren diese Schlüssel ihre Gültigkeit. SSH garantiert die Integrität der übertragenen Daten, \Dh die Daten können nicht durch einen Dritten (Mallory) verändert werden. 
 
 
 \subsection{Protokolle}
-SSH-1, SSH-2
+
+Das SSH-Protokoll existiert in zwei unterschiedlichen Versionen (SSH-1.x und SSH-2.x), die nicht kompatibel sind. SSH-1 wurde 1995 von Tatu Ylönen an der University of Technology in Helsinki entwickelt. Da es Mängel in der Integritätsprüfung aufweist, ist eine weitere Verwendung des SSH-1 Protokolls nicht empfehlenswert.
+
+SSH-2 ist modular aufgebaut. Die Architektur besteht aus drei Hauptkomponenten: Die Transportschicht, die Authentifizierungsschicht und die Verbindungsschicht. Beschrieben sind die Komponenten durch die \IT{Request for Comments} 4250 bis 4254 der IETF (Internet Engineering Task Force) \cite{ietf}. Ziel der Entwicklung von SSH-2 war es, die Sicherheitsmängel von SSH-1 zu beheben. Außerdem sind weitere Funktionalitäten hinzugekommen. --> evtl. Funktionalitäten aufführen
+
 
 \subsection{Implementierungen}
 
-Als erste Implementierung gilt blalbalalalalala.
+Als erste Implementierung des SSH-Protokolls gilt das von Tatu Ylönen 1995 veröffentlichte SSH1.
+Es wurde als freie Software veröffentlicht \cite{SSH, S.11}. Die Implementierung des SSH-2-Protokolls war hingegen ein kommerzielles Produkt. Die kostenlose Nutzung war nur für Bildungseinrichtungen und den nicht-gewerblichen Bereich erlaubt \cite{SSH, S.12}. Folglich kam weiterhin vielerorts die Implementierung des SSH-1-Protokolls zum Einsatz. 1999 entstand das OpenSSH-Projekt, das auf die letzte frei verfügbare Version von SSH aufbaut \cite{OpenSSH}.
+
+Aktuell gibt es verschiedene Implementierungen des SSH-Protokolls. Je nach Einsatzzweck (mobiles Gerät/Workstation) oder Betriebssystem gibt es verschiedene Alternativen. Im Folgenden ist eine Auswahl von Implementierungen mit Kurzbeschreibung aufgeführt.
 
 \paragraph{Dropbear} Ist eine Implementierung des SSH2-Protokolls und steht unter der MIT-Lizenz \cite{dropbear}. Dropbear ist vorallem für Systeme mit geringer Prozessorleistung und geringer Speicherkapazität interessant. Es ist auf verschiedenen POSIX-basierten Systemen lauffähig. Eine entsprechende Auflistung ist auf der offiziellen Webseite von Dropbear \footnote{https://matt.ucc.asn.au/dropbear/dropbear.html\#platforms} zu finden.
 

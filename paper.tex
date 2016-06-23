@@ -160,21 +160,25 @@ Aus dem Beispiel wird deutlich, dass \IT scp eine simple und effiziente Möglich
 
 \subsection{Dateisystem einhängen mit \IT{sshfs}}
 
-\IT sshfs steht für \IT Secure \IT Shell \IT File \IT System. Beim Client kommt dafür das FUSE (Filesystem in Userspace) Kernel-Modul zum Einsatz. Der große Vorteil ist hier, dass der Benutzer am Client-PC mit den eingehängten Dateien arbeiten kann, als wären es lokale Dateien.
+Mit \IT sshfs (\IT Secure \IT Shell \IT File \IT System) lassen sich entfernte Verzeichnisse ins lokale System einhängen. Beim Client kommt dafür das FUSE (Filesystem in Userspace) Kernel-Modul zum Einsatz. Der große Vorteil ist hier, dass der Benutzer am Client-PC mit den eingehängten Dateien arbeiten kann, als wären es lokale Dateien.
 
-unmounting fusermount -u mountpoint
-
-
- 
-
-		 
-
+Zum Einhängen ist der Befehl \IT sshfs, der \IT host und der \IT mountpoint,
+\Dh der Pfad an dem das Verzeichnis eingehängt werden soll, notwendig.
+Mit dem Befehl \IT unmounting \IT fusermount lässt sich das eingehängte Verzeichnis entfernen.
 
 \begin{program}
 sshfs [user@]host:[dir] mountpoint [options]
+
+# Verzeichnis aushängen:
+unmounting fusermount -u mountpoint
 \end{program}
 
-\subsection{Schlüssel generieren mit \IT ssh-keygen}
+Als Vorteil gegenüber vergleichbaren Tools, wie NFS oder Samba nennen die Entwickler von \IT sshfs beispielsweise das automatische Einhängen der Verzeichnisse über ein Shell-Skript. Außerdem bietet \IT sshfs den Vorteil, dass Verzeichnisse an beliebiger Stelle eingehängt werden können, unabhängig von zentral verwalteten Tabellen (/etc/fstab), die festgelegte Mount-Verzeichnisse enthält. \cite{sshfs}
+
+\subsection{Schlüssel generieren mit \IT ssh-\IT keygen}
+
+Der Client authentifiziert sich beim Server standardmäßig über die Eingabe eines Passworts. Die Verwendung von Passwörtern bringt jedoch verschiedene Nachteile mit sich. Häufig werden unsichere Passwörter verwendet, die leicht auf Brute-Force-Attacken oder Wörterbuchanalysen ansprechen. Außerdem kann das Passwort auf einem unterwanderten Server abgefangen werden, auch wenn die Übertragung selbst gesichert war. \cite[S. 29]{SSH} 
+
 \subsection{Port-Forwarding}
 --> Variante davon: X-Forwarding
 \subsection{Weitere Kommandos/Konfigurationsmöglichkeiten}

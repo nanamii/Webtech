@@ -51,6 +51,9 @@ ihr Verhalten diesbezüglich nicht. Die Sicherheit von privaten Daten ist ein ho
 
 SSH (Secure Shell) ist eine unixoide Tralalala...
 
+--> Paper konzentriert sich auf SSH unter Linux
+--> Paper will Idee verbreiten, dass mit unscheinbarem Tool einiges möglich ist; ssh wird in vielen Anwendungen verwendet etc.
+
 
 
 \newpage
@@ -72,7 +75,7 @@ Wie in der Abbildung \ref{fig:abb1} zu sehen ist, verlangt eine SSH-Verbindung z
 
 \subsection{Protokolle}
 
-Das SSH-Protokoll existiert in zwei unterschiedlichen Versionen (SSH-1.x und SSH-2.x), die nicht kompatibel sind. SSH-1 wurde 1995 von Tatu Ylönen an der University of Technology in Helsinki entwickelt. Da es Mängel in der Integritätsprüfung aufweist, ist eine weitere Verwendung des SSH-1 Protokolls nicht empfehlenswert.
+Das SSH-Protokoll existiert in zwei unterschiedlichen Versionen (SSH-1.x und SSH-2.x), die nicht kompatibel sind. SSH-1 wurde 1995 von Tatu Ylönen an der University of Technology in Helsinki entwickelt. Da es Mängel in der Integritätsprüfung aufweist, ist von einer weiteren Verwendung des SSH-1 Protokolls dringend abzuraten.
 
 SSH-2 ist modular aufgebaut. Die Architektur besteht aus drei Hauptkomponenten: Die Transportschicht, die Authentifizierungsschicht und die Verbindungsschicht. Beschrieben sind die Komponenten durch die \IT{Request for Comments} 4250 bis 4254 der IETF (Internet Engineering Task Force) \cite{ietf}. Ziel der Entwicklung von SSH-2 war es, die Sicherheitsmängel von SSH-1 zu beheben. Außerdem sind weitere Funktionalitäten hinzugekommen. --> evtl. Funktionalitäten aufführen
 
@@ -84,13 +87,15 @@ Es wurde als freie Software veröffentlicht \cite[S. 11]{SSH}. Die Implementieru
 
 Aktuell gibt es verschiedene Implementierungen des SSH-Protokolls. Je nach Einsatzzweck (mobiles Gerät/Workstation) oder Betriebssystem gibt es verschiedene Alternativen. Im Folgenden ist eine Auswahl von Implementierungen mit Kurzbeschreibung aufgeführt.
 
-\subparagraph{Dropbear} ist eine Implementierung des SSH2-Protokolls und steht unter der MIT-Lizenz \cite{dropbear}. Dropbear ist vorallem für Systeme mit geringer Prozessorleistung und geringer Speicherkapazität interessant. Es ist auf verschiedenen POSIX-basierten Systemen lauffähig. Eine entsprechende Auflistung ist auf der offiziellen Webseite von Dropbear \footnote{https://matt.ucc.asn.au/dropbear/dropbear.html\#platforms} zu finden.
+\subparagraph{Dropbear} ist eine Implementierung des SSH-2-Protokolls und steht unter der MIT-Lizenz \cite{dropbear}. Dropbear ist vorallem für Systeme mit geringer Prozessorleistung und geringer Speicherkapazität interessant. Es ist auf verschiedenen POSIX-basierten Systemen lauffähig. Eine entsprechende Auflistung ist auf der offiziellen Webseite von Dropbear \footnote{https://matt.ucc.asn.au/dropbear/dropbear.html\#platforms} zu finden.
 
 \subparagraph{Mosh} (mobile shell) bietet erweiterte Funktionalitäten, vorallem für mobile Geräte. Beispielsweise wird die Verbindung bei Roaming aufrechterhalten. Mosh ist keine direkte Implementierung des SSH-Protokolls. Es überträgt keinen Byte-String zwischen Client und Server. Vielmehr tauschen Client und Server einen Snapshot des aktuellen Bildschirms aus \cite{mosh}.
 
-\subparagraph{Lsh}
-\subparagraph{PuTTY} MIT-Lizenz, überwiegend für Windows.
-\subparagraph{OpenSSH}
+\subparagraph{Lsh} ist eine freie Implementierung des SSH-2-Protokolls, lizenziert untere der GNU GPL \cite{lsh}. 
+
+\subparagraph{PuTTY} steht unter der MIT-Lizenz und ist für Windows und Linux verfügbar. Nur Client? \cite{putty} --> Buch ProOpenSSH
+
+\subparagraph{OpenSSH} Server und Client; vorinstalliert auf allen Linux-Systemen
 
 
 
@@ -98,14 +103,25 @@ Aktuell gibt es verschiedene Implementierungen des SSH-Protokolls. Je nach Einsa
 \section{OpenSSH}
 
 OpenSSH -- eine der bekanntesten Implemetierungen des SSH-Protokolls -- dient nun dazu,
-elemnentare Funktionalitäten vorzustellen. 
+elementare Funktionalitäten vorzustellen.
+
+--> ssh = Client \\
+--> sshd = Server
+
+Für alle Funktionalitäten gibt es unter der jeweiligen \IT manpage (Manual Page) eine Übersicht der verfügbaren Optionen (\$ man ssh, \$ man scp, \$ man sshfs). 
 
 --> beinhaltet Server und Client
 --> einfaches Installieren über den Paketmanager
 
 \subsection{Remote Terminal Session}
 
+Der enfternte Login auf einem Server ist das Basis-Feature von OpenSSH.
+Dazu ist lediglich der Befehl \IT ssh und der \IT hostname, zu dem eine Verbidung aufgebaut werden soll, notwendig. Alle anderen Werte sind optional.
+Eine Übersicht der Parameter ist auf den manpages von SSH zu finden
+(\$ man ssh).
+
 \begin{program}
+
 [sue@kaktus]\$ ssh micra@login.rz.hs-augsburg.de
 micra@login.rz.hs-augsburg.de's password:
 %Linux bug 3.2.0-4-amd64 #1 SMP Debian 3.2.65-1+deb7u1 x86_64
@@ -117,7 +133,15 @@ micra@bug:~\$
 
 \end{program}
 
+Im Beispiel loggt sich der Benutzer \IT sue (Client: \IT kaktus) unter dem Benutzer \IT micra auf dem Server \IT login.rz.hs-augsburg.de ein. Anschließend authentifiziert der Server den Client durch eine Passwortabfrage. Mit \IT micra@bug:~\$ steht das Remote-Terminal zur Verfügung. Neben der Passwortabfrage gibt es die Möglichkeit, zur Authentifizierung beim Server einen SSH-Schlüssel zu verwenden --> Verweis auf Textstelle im Paper?.
+
+--> beenden mit exit etc.\\
+--> rsh alte Version\\
+--> remote-session wird in vielen Anwendungen verwendet
+
 \subsection{Datenübertragung mit \IT{scp}}
+
+\IT scp steht für \IT secure \IT copy und ermöglicht die gesicherte Übertragung von Daten zwischen Client und Server. Es können einzelne Dateien bis hin zu ganzen Verzeichnisstrukturen kopiert werden. \cite[S. 80]{openssh_book} Mit dem Befehl \IT scp, der Datei, die kopiert werden soll und der Angabe des Zielservers sind alle Pflichtparameter vorhanden. Nach Abfrage des Passworts durch den Server wird der Fortschritt der Datenübertragung angezeigt.
 
 \begin{program}
 [sue@kaktus ~]\$ scp hello\_all.txt
@@ -126,29 +150,59 @@ micra@login.rz.hs-augsburg.de's password:
 hello\_all.txt        100\% 6297     6.2KB/s   00:00
 \end{program}
 
+Im Beispiel wird die Datei \IT hello\_ \IT all.txt vom Homeverzeichnis des Clients (sue@kaktus) in das Homeverzeichnis des Servers ( micra@login.rz.hs-augsburg.de:~) kopiert. Unter Angabe eines Dateinamens hinter dem Server kann die Datei auf dem Server beliebig benannt werden. In den manpages von sshfs sind noch zahlreiche Optionen zu finden (\$ man sshfs).
+
+Aus dem Beispiel wird deutlich, dass \IT scp eine simple und effiziente Möglichkeit darstellt, Dateien sicher zwischen Client und Server zu übertragen. Es eignet sich beispielsweise hevorragend, um als Systemadministrator Aktualisierungen oder diverse Medien zu verteilen. \cite[S. 80]{openssh_book}
+
+--> reguläre Ausdrücke sind möglich \\
+--> rekursiv kopieren
+--> 
+
 \subsection{Dateisystem einhängen mit \IT{sshfs}}
+
+\IT sshfs steht für \IT Secure \IT Shell \IT File \IT System. Beim Client kommt dafür das FUSE (Filesystem in Userspace) Kernel-Modul zum Einsatz. Der große Vorteil ist hier, dass der Benutzer am Client-PC mit den eingehängten Dateien arbeiten kann, als wären es lokale Dateien.
+
+unmounting fusermount -u mountpoint
+
+
+ 
+
+		 
+
 
 \begin{program}
 sshfs [user@]host:[dir] mountpoint [options]
 \end{program}
 
-\subsection{Public-Key-Authentifizierung}
+\subsection{Schlüssel generieren mit \IT ssh-keygen}
 \subsection{Port-Forwarding}
-\subsection{X-Forwarding}
-\subsection{Agenten?}
+--> Variante davon: X-Forwarding
+\subsection{Weitere Kommandos/Konfigurationsmöglichkeiten}
+--> ssh\_config \\
+--> sshd\_config \\
+
 
 
 \section{Sicherheitsrelevante Betrachtung}
+
+
+
+
 \subsection{Verschlüsselungsalgorithmen bei SSH}
 \subsection{Ablauf einer sicheren Verbindung}\label{sec:ablauf}
 \subsection{Aktuelle Schwachstellen}
+Sicherheitskritische BUGs häufig nicht direkt in SSH, sondern in Komponenten, auf die SSH aufbaut, z.B. OpenSSL.
+
 \subsection{Anforderungen an den Serveradministrator}
+- System aktuell halten, Updates zügig einspielen
 
 
 \newpage
 
 
-\section{Zusammenfassung}
+\section{Fazit \& Ausblick}
+--> sehr simpel und effizient
+--> betrachtet man die nicht vorhandene Sensibilität bezüglich sicheren Passwörtern, ssh sinnvoll, bzw. mit ssh-key
 
 
 \bibliography{sample}

@@ -85,33 +85,29 @@ SSH-2 ist modular aufgebaut. Die Architektur besteht aus drei Hauptkomponenten: 
 Als erste Implementierung des SSH-Protokolls gilt das von Tatu Ylönen 1995 veröffentlichte SSH1.
 Es wurde als freie Software veröffentlicht \cite[S. 11]{SSH}. Die Implementierung des SSH-2-Protokolls war hingegen ein kommerzielles Produkt. Die kostenlose Nutzung war nur für Bildungseinrichtungen und den nicht-gewerblichen Bereich erlaubt \cite[S. 22]{SSH}. Folglich kam weiterhin vielerorts die Implementierung des SSH-1-Protokolls zum Einsatz. 1999 entstand das OpenSSH-Projekt, das auf die letzte frei verfügbare Version von SSH aufbaut \cite{OpenSSH}.
 
-Aktuell gibt es verschiedene Implementierungen des SSH-Protokolls. Je nach Einsatzzweck (mobiles Gerät/Workstation) oder Betriebssystem gibt es verschiedene Alternativen. Im Folgenden ist eine Auswahl von Implementierungen mit Kurzbeschreibung aufgeführt.
+Aktuell gibt es verschiedene Implementierungen des SSH-Protokolls. Je nach Einsatzzweck (mobiles Gerät/Workstation) oder Betriebssystem gibt es verschiedene Alternativen. Im Folgenden ist eine kleine Auswahl von Implementierungen mit Kurzbeschreibung aufgeführt.
+
+\subparagraph{PuTTY} steht unter der MIT-Lizenz und stellt einen SSH-Client zur Verfügung. Hauptsächlich wird es unter Windows verwendet, ist aber auch für UNIX-Systeme verfügbar.\cite{putty}  --> Buch ProOpenSSH 
+
+\subparagraph{OpenSSH} Server und Client; vorinstalliert auf allen Linux-Systemen, BSD-Lizenz
 
 \subparagraph{Dropbear} ist eine Implementierung des SSH-2-Protokolls und steht unter der MIT-Lizenz \cite{dropbear}. Dropbear ist vorallem für Systeme mit geringer Prozessorleistung und geringer Speicherkapazität interessant. Es ist auf verschiedenen POSIX-basierten Systemen lauffähig. Eine entsprechende Auflistung ist auf der offiziellen Webseite von Dropbear \footnote{https://matt.ucc.asn.au/dropbear/dropbear.html\#platforms} zu finden.
 
 \subparagraph{Mosh} (mobile shell) bietet erweiterte Funktionalitäten, vorallem für mobile Geräte. Beispielsweise wird die Verbindung bei Roaming aufrechterhalten. Mosh ist keine direkte Implementierung des SSH-Protokolls. Es überträgt keinen Byte-String zwischen Client und Server. Vielmehr tauschen Client und Server einen Snapshot des aktuellen Bildschirms aus \cite{mosh}.
 
-\subparagraph{Lsh} ist eine freie Implementierung des SSH-2-Protokolls, lizenziert untere der GNU GPL \cite{lsh}. 
+\subparagraph{Lsh} ist eine freie Implementierung des SSH-2-Protokolls, lizenziert untere der GNU GPL \cite{lsh}. --> evtl entfernen
 
-\subparagraph{PuTTY} steht unter der MIT-Lizenz und ist für Windows und Linux verfügbar. Nur Client? \cite{putty} --> Buch ProOpenSSH
 
-\subparagraph{OpenSSH} Server und Client; vorinstalliert auf allen Linux-Systemen
 
 
 
 
 \section{OpenSSH}
 
-OpenSSH -- eine der bekanntesten Implemetierungen des SSH-Protokolls -- dient nun dazu,
-elementare Funktionalitäten vorzustellen.
+OpenSSH dient nun dazu, elementare Funktionalitäten von SSH vorzustellen. Der Client wird unter OpenSSH mit \IT ssh und der Server mit \IT sshd bezeichnet. Alle Konfigurationen bezüglich Client und Server sind in den jeweiligen Konfigurationsdateien zu finden (Client: ssh\_config, Server: sshd\_config)
 
---> ssh = Client \\
---> sshd = Server
 
-Für alle Funktionalitäten gibt es unter der jeweiligen \IT manpage (Manual Page) eine Übersicht der verfügbaren Optionen (\$ man ssh, \$ man scp, \$ man sshfs). 
-
---> beinhaltet Server und Client
---> einfaches Installieren über den Paketmanager
+Für alle Funktionalitäten gibt es unter der jeweiligen \IT manpage (Manual Page) eine Übersicht der verfügbaren Optionen (\$ man ssh, \$ man scp, \$ man sshfs, \$man ssh-keygen, \$ man ssh-copy-id). 
 
 \subsection{Remote Terminal Session}
 
@@ -130,13 +126,16 @@ Plan your installation, and FAI installs your plan.
 Last login: Mon Apr 25 22:38:45 2016
 from p5088ff5b.dip0.t-ipconnect.de
 micra@bug:~\$
+micra@bug:~\/tmp\$ exit
+logout
+Connection to login.rz.hs-augsburg.de closed.
 
 \end{program}
 
-Im Beispiel loggt sich der Benutzer \IT sue (Client: \IT kaktus) unter dem Benutzer \IT micra auf dem Server \IT login.rz.hs-augsburg.de ein. Anschließend authentifiziert der Server den Client durch eine Passwortabfrage. Mit \IT micra@bug:~\$ steht das Remote-Terminal zur Verfügung. Neben der Passwortabfrage gibt es die Möglichkeit, zur Authentifizierung beim Server einen SSH-Schlüssel zu verwenden --> Verweis auf Textstelle im Paper?.
+Im Beispiel loggt sich der Benutzer \IT sue (Client: \IT kaktus) unter dem Benutzer \IT micra auf dem Server \IT login.rz.hs-augsburg.de ein. Anschließend authentifiziert der Server den Client durch eine Passwortabfrage. Mit \IT micra@bug:~\$ steht das Remote-Terminal zur Verfügung. Mit \IT exit kann die Sitzung beendet werden. Neben der Passwortabfrage ist es möglich, sich über einen SSH-Schlüssel beim Server zu authentifizieren.
 
---> beenden mit exit etc.\\
---> rsh alte Version\\
+Bei jedem Sitzungsaufbau wird clientseitig geprüft, ob der öffentliche Schlüssel des Servers in der Liste bereits bekannter Hosts (\IT known\_hosts) enthalten ist. Handelt es sich um den ersten Login auf einem Server, gibt es einen Warnhinweis, dass es keinen Eintrag in der known\_hosts Datei gibt. Dieser Mechanismus soll Man-in-the-Middle Angriffe verhindern. Stimmt der Benutzer dem Fortfahren zu, wird der öffentliche Schlüssel des Servers in die \IT known\_hosts Datei aufgenommen und beim nächsten Sitzungsaufbau kommt es zu keinem erneuten Warnhinweis. \cite[S. 25]{SSH}
+
 --> remote-session wird in vielen Anwendungen verwendet
 
 \subsection{Datenübertragung mit \IT{scp}}
@@ -177,11 +176,44 @@ Als Vorteil gegenüber vergleichbaren Tools, wie NFS oder Samba nennen die Entwi
 
 \subsection{Schlüssel generieren mit \IT ssh-\IT keygen}
 
-Der Client authentifiziert sich beim Server standardmäßig über die Eingabe eines Passworts. Die Verwendung von Passwörtern bringt jedoch verschiedene Nachteile mit sich. Häufig werden unsichere Passwörter verwendet, die leicht auf Brute-Force-Attacken oder Wörterbuchanalysen ansprechen. Außerdem kann das Passwort auf einem unterwanderten Server abgefangen werden, auch wenn die Übertragung selbst gesichert war. \cite[S. 29]{SSH} 
+Der Client authentifiziert sich beim Server standardmäßig über die Eingabe eines Passworts. Die Verwendung von Passwörtern bringt jedoch verschiedene Nachteile mit sich. Häufig werden unsichere Passwörter verwendet, die leicht auf Brute-Force-Attacken oder Wörterbuchanalysen ansprechen.\cite{schneier} Außerdem kann das Passwort auf einem unterwanderten Server abgefangen werden, auch wenn die Übertragung selbst gesichert war. \cite[S. 29]{SSH}
 
-\subsection{Port-Forwarding}
---> Variante davon: X-Forwarding
-\subsection{Weitere Kommandos/Konfigurationsmöglichkeiten}
+Daher bietet OpenSSH \IT Public-Key-Authentifizierung an. Hierzu wird ein Schlüsselpaar bestehend aus einem privaten und einem öffentlichen Schlüssel benötigt. Der private Schlüssel ist geheim, der öffentliche Schlüssel wird auf dem Server hinterlegt. \cite[S. 114]{openssh_book} (näheres hierzu bei Ablauf einer sicheren Verbindung). An dieser Stelle kommt \IT ssh-keygen zum Einsatz. Mit diesem Tool ist es möglich, das Schlüsselpaar unkompliziert und komfortabel erstellen zu lassen. Standardmäßig erzeugt \IT ssh-keygen ein RSA-Schlüsselpaar. Andere Verschlüsselungsverfahren können durch Optionen ausgewählt werden (welche sind das genau?). --> evtl. Referenz Buch, PublicKeyAuth
+
+--> Schlüssellänge
+
+\begin{program}
+[sue@kaktus ~]\$ ssh-keygen
+\end{program}
+
+--> es kann ein Passwort vergeben werden, um ssh-Schlüssel zu sichern
+
+
+Nach dem Erstellen der Schlüssel legt \IT ssh-keygen das lokale Verzeichnis \IT .ssh an. Dort wird der öffentliche und private Schlüssel gespeichert.
+
+Im nächsten Schritt muss der öffentliche Schlüssel auf dem Server hinterlegt werden. Dazu stehen verschiedene Möglichkeiten zur Verfügung. Man könnte den öffentlichen Schlüssel mit dem Befehl \IT scp auf den Server kopieren und zwar in das Verzeichnis \IT .ssh\/authorized\_keys. Wesentlich einfacher funktioeniert es mit dem Befehl \IT ssh-copy-id. Unter Angabe des \IT hostname kopiert der Befehl \IT ssh-copy-id den öffentlichen Schlüssel automatisch ins Verzeichnis \IT .ssh\/authorized\_keys des Servers.
+
+\begin{program}
+[sue@kaktus ~]\$ ssh-copy-id micra@login.rz.hs-augsburg.de
+\end{program}
+
+Um Public-Key-Authentifizierung durchführen zu können, muss es vom Server freigegeben sein. Das Attribut \IT PubKeyAuthentication sollte dafür in der Konfigurationsdatei des Servers auf \IT yes gesetzt sein. \cite [S. 116]{openssh_book}
+
+\subsection{Weitere Funktionalitäten}
+
+\paragraph{SSH-Agenten}
+Die Eingabe der Passphrase für die Freigabe des SSH-Schlüssels muss bei jeder Remote-Verbindung neu durchgeführt werden. SSH-Agenten ermöglichen es,
+dass die Passphrase lediglich einmal pro Session abgefragt wird. Für alle weiteren Remote-Verbindungen, die aufgebaut werden, speichert der SSH-Agent die privaten Schlüssel. \cite[S. 230]{SSH} \cite[S. 132]{openssh_book}
+
+\paragraph{Forwarding}
+
+SSH macht es möglich, den Datenstrom von TCP/IP-Anwendungen zu verschlüsseln.
+Das wird \IT Port-Forwarding, oder auch \IT Tunneling genannt. \cite[S. 337]{SSH} Um Port-Forwarding ausführen zu können, muss TCP-Forwarding in der Konfigurationsdatei des Servers als erlaubt gekennzeichnet sein. \cite[S. 151]{openssh_book}
+
+Mit \IT X-Forwarding kann die entfernte grafische Oberfläche auf dem lokalen Rechner dargestellt werden. 
+
+\paragraph{Konfigurationsdateien}
+
 --> ssh\_config \\
 --> sshd\_config \\
 
@@ -190,15 +222,39 @@ Der Client authentifiziert sich beim Server standardmäßig über die Eingabe ei
 \section{Sicherheitsrelevante Betrachtung}
 
 
-
-
-\subsection{Verschlüsselungsalgorithmen bei SSH}
 \subsection{Ablauf einer sicheren Verbindung}\label{sec:ablauf}
-\subsection{Aktuelle Schwachstellen}
+
+\paragraph{Verbindungaufbau}
+Der Aufbau einer sicheren Verbindung läuft grob wie folgt ab: Der Client sendet eine Anfrage an den Server. SSH nutzt hier standardmäßig Port 22, das ist jedoch konfigurierbar. Der Server gibt seine Identität (host-ID), das verwendete Protokoll (SSH-1, SSH-2) und weitere Daten bekannt. Falls der Client zum ersten Mal mit dem Server kommuniziert, wird eine Warnung ausgegeben. Fährt der Client fort, wird die host-ID in die Liste der \IT known\_hosts aufgenommen. Für die Sitzung wird mittels Diffie-Hellman-Verfahren ein Session-Key erzeugt. Abschließend wählt der Client eine der vorgeschlagenen symmetrischen Verschlüsselungsverahren --> angeben, welche zur Auswahl stehen bei SSH
+
+\paragraph{Authentifizierung}
+An dieser Stelle ist die Verbindung verschlüsselt und die Authentifizierung findet statt. Für eine Public-Key-Authentifizierung sieht dies folgendermaßen aus: Der Server generiert einen Zufalls-String und verschlüsselt diesen mit dem öffentlichen Schlüssel des Clients. Der Client entschlüsselt diesen Zufalls-String mit seinem privatem Schlüssel. Anschließend kombiniert der Client den entschlüsselten String mit dem Session-Key und generiert daraus eine md5-Hashsumme. Der Server führt diese Aktion ebenfalls durch und vergleicht die beiden md5-Hashsummen. Stimmen die beiden Summen überein, ist der Client erfolgreich authentifiziert. \cite[S. 64]{SSH} \cite{man_ssh}
+
+
+
+
+\subsection{Aktuelle/Bekannte Schwachstellen}
 Sicherheitskritische BUGs häufig nicht direkt in SSH, sondern in Komponenten, auf die SSH aufbaut, z.B. OpenSSL.
 
+http://www.openssh.com/security.html
+
 \subsection{Anforderungen an den Serveradministrator}
-- System aktuell halten, Updates zügig einspielen
+
+Der Administrator eines SSH-Servers muss grundsätzlich dafür sorgen, dass die verwendete Software aktuell ist. Die Konfigurationsdatei enthält Standardwerte und muss auf den jeweiligen Anwendungsfall angepasst werden.
+Der Zugriff auf die Konfigurationsdatei ist nur mit Root-Rechten möglich.
+Handelt es sich um ein sehr sicherheitskritisches System, könnte man eine Prüfsumme (md5, SHA1) der Konfigurationsdatei erstellen, um mögliche Manipulationen zu erkennen. \cite[S. 50]{openssh_book}
+
+Empfehlenswerte Änderungen/Einstellungen der Konfiguration:
+
+\IT PermitEmptyPasswords no: Diese Option muss zwingend auf \IT no gesetzt sein. Andererseits ist es möglich, dass sich Clients ohne Passwort einloggen können.
+
+\IT RhostsAuthentication no, RhostsRSAAuthentication no, IgnoreRhosts yes, IgnoreRootRhosts yes: 
+
+
+
+
+
+
 
 
 \newpage
@@ -210,8 +266,8 @@ Sicherheitskritische BUGs häufig nicht direkt in SSH, sondern in Komponenten, a
 
 
 \bibliography{sample}
-\bibliographystyle{abbrv}
-
+\bibliographystyle{alphadin}
+%\bibliographystyle{apalike}
 
 \end{document}
 
